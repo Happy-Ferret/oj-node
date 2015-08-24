@@ -1,0 +1,9 @@
+@implementation Bard
++(id)tell {
+    console.log("I am out of beer!");
+}
+@end
+
+module.exports = function(){
+    [Bard tell];
+}
