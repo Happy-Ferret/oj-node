@@ -1,8 +1,11 @@
 {
   "name": "oj-node",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Run OJ in Node, just like any other JS. <3 ObjC and OJ!",
   "main": "index.js",
+  "bin": {
+      "oj": "./bin/oj"
+  },
   "directories": {
     "test": "test"
   },

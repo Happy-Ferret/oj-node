@@ -1,0 +1,49 @@
+#!/usr/bin/env node
+
+require("../");
+
+var ojc = require("ojc").compile;
+var repl = require("repl");
+var vm = require("vm");
+var path = require("path");
+var fs = require("fs");
+var merge = require("merge");
+
+var runInContext = function(js, context, filename) {
+    if (context === global) {
+        return vm.runInThisContext(js, filename);
+    } else {
+        return vm.runInContext(js, context, filename);
+    }
+};
+
+var home = process.env.HOME || process.env.USERHOME;
+var config = path.join(home, ".config.oj");
+var options = {
+    files: [{
+        path: path.join(process.cwd(), "-"),
+        contents: null
+    }],
+    state: null
+};
+
+fs.exists(config, function(does){
+    if(does) {
+        options = merge(require(config), options);
+    }
+    var r = repl.start({
+        prompt: "oj> ",
+        useGlobal: true,
+        eval: function ojEval(cmd, ctx, filename, cb) {
+            options.files[0].contents = cmd;
+            ojc(options, function(err, res){
+                if(err) return cb(err);
+                options.state = res.state;
+                cb(null, runInContext(res.code, ctx, filename));
+            });
+        }
+    });
+    r.on("exit", function(){
+        process.exit(0);
+    });
+})

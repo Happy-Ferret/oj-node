@@ -29,6 +29,16 @@ Do your typical NPM-dance and you're good to go.
 
     npm install --save oj-node
 
+## REPL
+There is a tiny REPL I wrote that you can use to communicate with a script you wrote and test functionality. It is like the regular NodeJS REPL, just that it will also accept and understand OJ.
+
+To use it, you have to install this package using `--global` or `-g`. Then just type in `oj` in your command shell.
+
+```
+Ingwie@Ingwies-Macbook-Pro.local ~ $ oj
+oj>
+```
+
 ## `#`-macro support?
 I do have a project that supports it - but it works asynchronously to an extend where `deasync` would be more painful than helpful. If you want that, consider pre-compiling your code.
 
