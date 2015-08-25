@@ -31,19 +31,28 @@ fs.exists(config, function(does){
     if(does) {
         options = merge(require(config), options);
     }
-    var r = repl.start({
-        prompt: "oj> ",
-        useGlobal: true,
-        eval: function ojEval(cmd, ctx, filename, cb) {
-            options.files[0].contents = cmd;
-            ojc(options, function(err, res){
-                if(err) return cb(err);
-                options.state = res.state;
-                cb(null, runInContext(res.code, ctx, filename));
-            });
+    if(typeof process.argv[2] == "undefined") {
+        var r = repl.start({
+            prompt: "oj> ",
+            useGlobal: true,
+            eval: function ojEval(cmd, ctx, filename, cb) {
+                options.files[0].contents = cmd;
+                ojc(options, function(err, res){
+                    if(err) return cb(err);
+                    options.state = res.state;
+                    cb(null, runInContext(res.code, ctx, filename));
+                });
+            }
+        });
+        r.on("exit", function(){
+            process.exit(0);
+        });
+    } else {
+        var file = process.argv[2];
+        if(fs.existsSync(path.join(process.cwd(), file))) {
+            require(path.join(process.cwd(), file));
+        } else {
+            require(file);
         }
-    });
-    r.on("exit", function(){
-        process.exit(0);
-    });
+    }
 })

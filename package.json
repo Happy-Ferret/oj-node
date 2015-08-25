@@ -1,6 +1,6 @@
 {
   "name": "oj-node",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Run OJ in Node, just like any other JS. <3 ObjC and OJ!",
   "main": "index.js",
   "bin": {
